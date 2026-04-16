@@ -148,93 +148,75 @@ export default function Home() {
   return (
     <div ref={containeref} className="bg-gray-900 min-h-screen font-sans text-white overflow-x-hidden">
       {/* Header */}
-      <header className="container mx-auto px-4 py-4 md:py-6 flex justify-between items-center relative z-20">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-2xl md:text-3xl font-bold text-blue-500 cursor-pointer"
-          onClick={() => router.push("/")}
-        >
-          TradePro
-        </motion.div>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden md:block">
-          <ul className="flex space-x-6">
-            {["Markets", "Trading", "Analysis", "Learn"].map((item, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <span className="text-gray-300 hover:text-blue-500 transition-colors cursor-pointer">
-                  {item}
-                </span>
-              </motion.li>
-            ))}
-          </ul>
-        </nav>
-        
-        {/* Desktop Button */}
-        <motion.button
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="hidden md:block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
-          onClick={() => router.push("/login")}
-        >
-          Start Trading
-        </motion.button>
-        
-        {/* Mobile Menu Button */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="md:hidden text-white menu-button z-30 relative"
-          onClick={(e) => {
-            e.stopPropagation();
-            setismenuopen(!ismenuopen);
-          }}
-        >
-          {ismenuopen ? <X size={24} /> : <Menu size={24} />}
-        </motion.button>
-      </header>
+      <header className="container mx-auto px-4 py-4 md:py-6 flex justify-between items-center relative z-50">
+  <div
+    className="text-2xl md:text-3xl font-bold text-blue-500 cursor-pointer"
+    onClick={() => router.push("/")}
+  >
+    TradePro
+  </div>
+  
+  <nav className="hidden md:block">
+    <ul className="flex space-x-6">
+      {["Markets", "Trading", "Analysis", "Learn"].map((item, index) => (
+        <li key={index}>
+          <span className="text-gray-300 hover:text-blue-500 transition-colors cursor-pointer">
+            {item}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  
+  <button
+    className="hidden md:block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+    onClick={() => router.push("/login")}
+  >
+    Start Trading
+  </button>
+  
+  {/* Mobile Menu Button */}
+  <button
+    onClick={() => setismenuopen(!ismenuopen)}
+    className="md:hidden text-white p-2 z-50"
+  >
+    {ismenuopen ? <X size={28} /> : <Menu size={28} />}
+  </button>
+</header>
 
       {/* Mobile Menu Panel */}
       <AnimatePresence>
-        {ismenuopen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-800 z-40 p-6 shadow-xl md:hidden"
-            style={{ top: 0, paddingTop: "80px" }}
-          >
-            <nav>
-              <ul className="space-y-6">
-                {["Markets", "Trading", "Analysis", "Learn", "Login", "Sign Up"].map((item) => (
-                  <li key={item}>
-                    <button
-                      onClick={() => {
-                        setismenuopen(false);
-                        if (item === "Login") router.push("/login");
-                        if (item === "Sign Up") router.push("/signup");
-                      }}
-                      className="text-gray-300 hover:text-blue-500 transition-colors text-lg w-full text-left py-2"
-                    >
-                      {item}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </motion.div>
-        )}
+{/* Mobile Menu Panel */}
+{ismenuopen && (
+  <div 
+    className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 z-40 md:hidden"
+    style={{ backgroundColor: '#111827' }}
+  >
+    <div className="flex justify-end p-4">
+      <button onClick={() => setismenuopen(false)} className="text-white p-2">
+        <X size={28} />
+      </button>
+    </div>
+    <nav className="px-8 py-4">
+      <ul className="space-y-4">
+        {["Markets", "Trading", "Analysis", "Learn", "Login", "Sign Up"].map((item) => (
+          <li key={item}>
+            <button
+              onClick={() => {
+                setismenuopen(false);
+                if (item === "Login") router.push("/login");
+                else if (item === "Sign Up") router.push("/signup");
+              }}
+              className="text-gray-300 hover:text-blue-500 transition-colors text-xl w-full text-left py-3 border-b border-gray-700"
+            >
+              {item}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+)}
       </AnimatePresence>
 
       {/* Main Content */}
