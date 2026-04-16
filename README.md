@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://trade-pro.vercel.app)
+[View Live Demo](https://trade-pro-inky.vercel.app/)
 
 ## 📋 Overview
 
