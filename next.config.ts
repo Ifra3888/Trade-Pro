@@ -1,6 +1,10 @@
 // next.config.ts
 import type { NextConfig } from "next";
+const nextConfig = {
+  turbopack: {},
+};
 
+module.exports = nextConfig;
 const nextConfig: NextConfig = {
   // Suppress specific console errors
   onDemandEntries: {
