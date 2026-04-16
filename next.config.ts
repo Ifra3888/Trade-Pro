@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
+  turbopack: {},
   compiler: {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === "production",
@@ -22,5 +23,10 @@ const nextConfig: NextConfig = {
     return config;
   },
 };
+
+  
+
+
+module.exports = nextConfig;
 
 export default nextConfig;
