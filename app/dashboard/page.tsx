@@ -103,24 +103,58 @@ const Header = () => {
           {isMenuOpen ? <X /> : <Menu />}
         </motion.button>
       </div>
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }} className="fixed top-0 right-0 h-full w-64 bg-gray-800 p-4 z-50">
-            <motion.button onClick={() => setIsMenuOpen(false)} className="relative ml-auto mb-4"><X /></motion.button>
-            <nav className="mt-8">
-              <ul className="space-y-4">
-                <li><a href="/dashboard" className="text-blue-500 font-semibold flex items-center"><Zap className="mr-2" size={16} />Explore</a></li>
-                <li><a href="/dashboard" className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Globe className="mr-2" size={16} />Investments</a></li>
-                <li><a href="/dashboard" className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><BookOpen className="mr-2" size={16} />Learn</a></li>
-                <li><a href="/dashboard" className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Gift className="mr-2" size={16} />Rewards</a></li>
-                <li><a href="/dashboard" className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><HelpCircle className="mr-2" size={16} />Support</a></li>
-                <li><a href="/dashboard" className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Settings className="mr-2" size={16} />Settings</a></li>
-                <li className="pt-4 border-t border-gray-700"><button onClick={handleLogout} className="text-red-400 hover:text-red-300 transition-colors flex items-center w-full">🚪 Logout</button></li>
-              </ul>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+     <AnimatePresence>
+  {isMenuOpen && (
+    <motion.div 
+      initial={{ opacity: 0, x: "100%" }} 
+      animate={{ opacity: 1, x: 0 }} 
+      exit={{ opacity: 0, x: "100%" }} 
+      className="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-800 p-4 z-50 shadow-xl"
+    >
+      <div className="flex justify-end mb-6">
+        <motion.button 
+          onClick={() => setIsMenuOpen(false)} 
+          whileHover={{ scale: 1.1 }} 
+          whileTap={{ scale: 0.9 }}
+        >
+          <X size={24} className="text-white" />
+        </motion.button>
+      </div>
+      <nav>
+        <ul className="space-y-4">
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-blue-500 font-semibold flex items-center"><Zap className="mr-2" size={16} />Explore</a></li>
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Globe className="mr-2" size={16} />Investments</a></li>
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><BookOpen className="mr-2" size={16} />Learn</a></li>
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Gift className="mr-2" size={16} />Rewards</a></li>
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><HelpCircle className="mr-2" size={16} />Support</a></li>
+          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Settings className="mr-2" size={16} />Settings</a></li>
+          
+          {/* Add User Email (if logged in) */}
+          {user && (
+            <li className="pt-2">
+              <div className="text-sm text-gray-400 px-2 py-1 truncate">
+                👤 {user.email}
+              </div>
+            </li>
+          )}
+          
+          {/* Logout Button - FIXED */}
+          <li className="pt-4 border-t border-gray-700">
+            <button 
+              onClick={() => { 
+                handleLogout(); 
+                setIsMenuOpen(false); 
+              }} 
+              className="text-red-400 hover:text-red-300 transition-colors flex items-center w-full py-2"
+            >
+              🚪 Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </motion.div>
+  )}
+</AnimatePresence>
     </motion.header>
   );
 };
