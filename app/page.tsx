@@ -55,7 +55,7 @@ const FeatureBox = ({ icon, title, description, delay }: any) => {
       <h3 className="text-xl font-semibold mb-2 text-white relative z-10">
         {title}
       </h3>
-      <p className="text-gray-300 mb-4 flex-grow relative z-10">
+      <p className="text-gray-300 mb-4 grow relative z-10">
         {description}
       </p>
       <motion.button
@@ -155,7 +155,7 @@ export default function Home() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="hidden md:block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors transform hover:scale-105"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push("/login")}
         >
           Start Trading
         </motion.button>
@@ -168,39 +168,7 @@ export default function Home() {
           {ismenuopen ? <X size={24} /> : <Menu size={24} />}
         </motion.button>
       </header>
-      {ismenuopen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.6 }}
-          className="md:hidden bg-gray-800 px-4 py-2"
-        >
-          <ul className="space-y-3">
-            {["Markets", "Trading", "Analysis", "Learn"].map((item, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <span className=" block text-gray-300 hover:text-blue-500 transition-colors py-2">
-                  {item}
-                </span>
-              </motion.li>
-            ))}
-            <motion.li
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <button className="w-full bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors transform hover:scale-105">
-                Start Trading
-              </button>
-            </motion.li>
-          </ul>
-        </motion.div>
-      )}
+     
       <main className="container mx-auto px-4">
         <Animatedsection>
           <div className="text-center py-20">
@@ -222,6 +190,7 @@ export default function Home() {
               tool
             </motion.p>
             <motion.button
+              onClick={() => router.push("/signup")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
@@ -377,7 +346,8 @@ export default function Home() {
               Join thousands of traders and start your journey to financial
               success.
             </p>
-            <motion.button
+            <motion.button 
+             onClick={() => router.push("/signup")}
               className="bg-white text-blue-600 px-8 py-4 rounded-md text-xl font-bold hover:bg-gray-100 transition-colors relative z-10"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

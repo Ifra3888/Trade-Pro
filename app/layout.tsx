@@ -1,5 +1,7 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { AuthProvider } from "@/components/AuthProvider";
 import "./globals.css";
 import {
   Facebook,
@@ -67,9 +69,9 @@ const Footer = () => (
           </div>
         </div>
         <div>
-          <h3 className="font-semibold mb-4 ">Products</h3>
+          <h3 className="font-semibold mb-4">Products</h3>
           <ul className="space-y-2">
-            {["Stocks", "Futures & Options", "IPO", "Mutal Funds"].map(
+            {["Stocks", "Futures & Options", "IPO", "Mutual Funds"].map(
               (item) => (
                 <li
                   className="text-sm hover:text-blue-500 cursor-pointer"
@@ -82,9 +84,9 @@ const Footer = () => (
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold mb-4 ">Products</h3>
+          <h3 className="font-semibold mb-4">Company</h3> {/* Fixed from "Products" to "Company" */}
           <ul className="space-y-2">
-            {["About Us", "Pricing", "Blog", "Carrer", "Help and Support"].map(
+            {["About Us", "Pricing", "Blog", "Career", "Help and Support"].map(
               (item) => (
                 <li
                   className="text-sm hover:text-blue-500 cursor-pointer"
@@ -97,13 +99,13 @@ const Footer = () => (
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold mb-4 ">Products</h3>
+          <h3 className="font-semibold mb-4">Resources</h3> {/* Fixed from "Products" to "Resources" */}
           <ul className="space-y-2">
             {[
-              "Amc Mutual Funds",
+              "AMC Mutual Funds",
               "Calculators",
               "Glossary",
-              "Tradepro Digest",
+              "TradePro Digest",
               "Help and Support",
             ].map((item) => (
               <li
@@ -116,9 +118,8 @@ const Footer = () => (
           </ul>
         </div>
       </div>
-      <div className="mt-8 pt-8 border-gray-200 flex flex-col md:flex-row justify-between items-center">
-        <p className="text-sm text-gray-500 mb-4 mdLmb-0">
-          {" "}
+      <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-sm text-gray-500 mb-4 md:mb-0">
           © 2016-2024 TradePro. All rights reserved, Built with ❤️ in India
         </p>
       </div>
@@ -139,7 +140,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <Footer />
       </body>
     </html>
