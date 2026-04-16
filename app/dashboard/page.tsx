@@ -44,22 +44,26 @@ const fadeInUp = {
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
 };
-
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const notifications = 3;
   const router = useRouter();
   const { user } = useAuth();
   
   const handleLogout = async () => {
-    await auth.signOut();
-    router.push("/login");
+    try {
+      await auth.signOut();
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
   
   return (
     <motion.header {...fadeInUp} className="flex justify-between items-center p-4 bg-gray-900 text-white">
       <div className="flex items-center space-x-8">
-        <motion.span onClick={() => router.push("/")} className="text-2xl font-bold text-blue-500 cursor-pointer" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.span onClick={() => router.push("/")} className="text-2xl font-bold text-blue-500 cursor-pointer">
           TradePro
         </motion.span>
         <nav className="hidden md:block">
@@ -70,91 +74,63 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+      
       <div className="hidden md:flex items-center space-x-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input type="text" placeholder="What are you looking for today?" className="pl-10 pr-4 py-2 bg-gray-800 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="text" placeholder="Search..." className="pl-10 pr-4 py-2 bg-gray-800 rounded-full text-sm" />
         </div>
-        <motion.div className="relative cursor-pointer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <Bell className="text-gray-300 hover:text-blue-500 transition-colors" />
-          {notifications > 0 && (
-            <motion.span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" initial={{ scale: 0 }} animate={{ scale: 1 }}>
-              {notifications}
-            </motion.span>
-          )}
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <ShoppingCart className="text-gray-300 hover:text-blue-500 cursor-pointer transition-colors" />
-        </motion.div>
-        <div className="relative group">
-          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <User className="text-gray-300 hover:text-blue-500 cursor-pointer transition-colors" />
-          </motion.div>
-          <div className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-xl hidden group-hover:block z-20 border border-gray-700">
-            <div className="py-2">
-              <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-700 truncate">👤 {user?.email}</div>
-              <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition">🚪 Logout</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="md:hidden">
-        <motion.button onClick={() => setIsMenuOpen(!isMenuOpen)} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          {isMenuOpen ? <X /> : <Menu />}
-        </motion.button>
-      </div>
-     <AnimatePresence>
-  {isMenuOpen && (
-    <motion.div 
-      initial={{ opacity: 0, x: "100%" }} 
-      animate={{ opacity: 1, x: 0 }} 
-      exit={{ opacity: 0, x: "100%" }} 
-      className="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-800 p-4 z-50 shadow-xl"
-    >
-      <div className="flex justify-end mb-6">
-        <motion.button 
-          onClick={() => setIsMenuOpen(false)} 
-          whileHover={{ scale: 1.1 }} 
-          whileTap={{ scale: 0.9 }}
-        >
-          <X size={24} className="text-white" />
-        </motion.button>
-      </div>
-      <nav>
-        <ul className="space-y-4">
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-blue-500 font-semibold flex items-center"><Zap className="mr-2" size={16} />Explore</a></li>
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Globe className="mr-2" size={16} />Investments</a></li>
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><BookOpen className="mr-2" size={16} />Learn</a></li>
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Gift className="mr-2" size={16} />Rewards</a></li>
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><HelpCircle className="mr-2" size={16} />Support</a></li>
-          <li><a href="/dashboard" onClick={() => setIsMenuOpen(false)} className="text-gray-300 hover:text-blue-500 transition-colors flex items-center"><Settings className="mr-2" size={16} />Settings</a></li>
-          
-          {/* Add User Email (if logged in) */}
-          {user && (
-            <li className="pt-2">
-              <div className="text-sm text-gray-400 px-2 py-1 truncate">
-                👤 {user.email}
+        <Bell className="text-gray-300" />
+        <ShoppingCart className="text-gray-300" />
+        
+        {/* User Menu - Click to open */}
+        <div className="relative">
+          <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="focus:outline-none">
+            <User className="text-gray-300 hover:text-blue-500 transition-colors" />
+          </button>
+          {isUserMenuOpen && (
+            <div className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-xl z-20 border border-gray-700">
+              <div className="py-2">
+                <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-700 truncate">
+                  👤 {user?.email}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition"
+                >
+                  🚪 Logout
+                </button>
               </div>
-            </li>
+            </div>
           )}
-          
-          {/* Logout Button - FIXED */}
-          <li className="pt-4 border-t border-gray-700">
-            <button 
-              onClick={() => { 
-                handleLogout(); 
-                setIsMenuOpen(false); 
-              }} 
-              className="text-red-400 hover:text-red-300 transition-colors flex items-center w-full py-2"
-            >
-              🚪 Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </motion.div>
-  )}
-</AnimatePresence>
+        </div>
+      </div>
+      
+      {/* Mobile menu button */}
+      <div className="md:hidden">
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white">
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+      
+      {/* Mobile menu panel */}
+      {isMobileMenuOpen && (
+        <div className="fixed top-0 right-0 h-full w-64 bg-gray-800 p-4 z-50 shadow-xl">
+          <div className="flex justify-end mb-6">
+            <button onClick={() => setIsMobileMenuOpen(false)}><X size={24} /></button>
+          </div>
+          <nav>
+            <ul className="space-y-4">
+              <li><button onClick={() => setIsMobileMenuOpen(false)} className="text-blue-500">Explore</button></li>
+              <li><button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300">Investments</button></li>
+              <li><button onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300">Learn</button></li>
+              <li className="pt-4 border-t border-gray-700">
+                <button onClick={handleLogout} className="text-red-400">🚪 Logout</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </motion.header>
   );
 };
